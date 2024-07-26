@@ -19,9 +19,7 @@ class HashTable {
 
     public:
         HashTable(int size, T not_found);
-        
         void set(key_t k, T v);
-        
         T get(key_t k);
 };
 
@@ -44,14 +42,15 @@ HashTable<T>::HashTable(int size, T not_found) {
 template<class T>
 void HashTable<T>::set(key_t k, T v) {
     uint64_t i = _hash(k) % m_size;
+    bucket &b = m_buckets[i];
     item it(k, v);
-    m_buckets[i].push_back(it);
+    b.push_back(it);
 }
 
 template<class T>
 T HashTable<T>::get(key_t k) {
     uint64_t i = _hash(k) % m_size;
-    bucket b = m_buckets[i];
+    bucket &b = m_buckets[i];
     for (int j = 0; j < b.size(); j++) {
         if (!strcmp(k, b[j].first)) {
             return b[j].second;
